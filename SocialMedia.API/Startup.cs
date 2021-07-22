@@ -25,13 +25,6 @@ namespace SocialMedia.API
             services.AddControllers();
 
             services.AddDbContext<SocialMediaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
-
-            /* Dependencies Injection 
-             * If we want to change the database manager from SQL Server to Mongo DB,
-             * we would only have to change PostRepository to PostMongoRepository
-             * 
-             * services.AddTransient<IPostRepository, PostMongoRepository>();
-            */
             services.AddTransient<IPostRepository, PostRepository>();
         }
 

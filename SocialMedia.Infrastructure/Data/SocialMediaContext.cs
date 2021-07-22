@@ -19,22 +19,11 @@ namespace SocialMedia.Infrastructure.Data
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
-        // Delete OnConfiguring (Connection String Exposed)
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Comment>(entity => { });
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
-
-            //modelBuilder.Entity<Post>(entity => {});
             modelBuilder.ApplyConfiguration(new PostConfiguration());
-
-            //modelBuilder.Entity<User>(entity => { });
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-
-            // OnModelCreatingPartial(modelBuilder);
         }
-
-        //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

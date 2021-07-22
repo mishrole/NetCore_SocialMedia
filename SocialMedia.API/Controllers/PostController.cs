@@ -8,13 +8,6 @@ namespace SocialMedia.API.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-
-        /* We need to receive the concrete implementations that we are going
-         * to use for the abstractions references.
-         * 
-         * IPostRepository: Interface abstraction 
-        */
-
         private readonly IPostRepository _postRepository;
         public PostController(IPostRepository postRepository)
         {
@@ -24,7 +17,6 @@ namespace SocialMedia.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPosts()
         {
-            // var posts = new PostRepository().GetPosts();
             var posts = await _postRepository.GetPosts();
             return Ok(posts);
         }
