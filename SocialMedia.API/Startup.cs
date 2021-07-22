@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SocialMedia.Core.Interfaces;
+using SocialMedia.Infrastructure.Repositories;
 
 namespace SocialMedia.API
 {
@@ -26,6 +21,14 @@ namespace SocialMedia.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            /* Dependencies Injection 
+             * If we want to change the database manager from SQL Server to Mongo DB,
+             * we would only have to change PostRepository to PostMongoRepository
+             * 
+             * services.AddTransient<IPostRepository, PostMongoRepository>();
+            */
+            services.AddTransient<IPostRepository, PostRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
