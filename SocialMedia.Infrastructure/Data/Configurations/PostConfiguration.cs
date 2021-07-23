@@ -16,12 +16,10 @@ namespace SocialMedia.Infrastructure.Data.Configurations
             builder.HasKey(e => e.PostId);
 
             builder.Property(e => e.PostId)
-                .HasColumnName("IdPublicacion")
-                .ValueGeneratedNever();
+                .HasColumnName("IdPublicacion");
 
             builder.Property(e => e.UserId)
-                .HasColumnName("IdUsuario")
-                .ValueGeneratedNever();
+                .HasColumnName("IdUsuario");
 
             builder.Property(e => e.Description)
                 .IsRequired()

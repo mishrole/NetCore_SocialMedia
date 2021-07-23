@@ -13,8 +13,7 @@ namespace SocialMedia.Infrastructure.Data.Configurations
             builder.HasKey(e => e.UserId);
 
             builder.Property(e => e.UserId)
-                .HasColumnName("IdUsuario")
-                .ValueGeneratedNever();
+                .HasColumnName("IdUsuario");
 
             builder.Property(e => e.LastName)
                 .IsRequired()
