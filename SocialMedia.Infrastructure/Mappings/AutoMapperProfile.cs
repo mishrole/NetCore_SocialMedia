@@ -1,10 +1,18 @@
-﻿using System;
+﻿using AutoMapper;
+using SocialMedia.Core.DTOs;
+using SocialMedia.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SocialMedia.Infrastructure.Mappings
 {
-    class AutoMapperProfile
+    public class AutoMapperProfile : Profile
     {
+        public AutoMapperProfile()
+        {
+            CreateMap<Post, PostDto>();
+            CreateMap<PostDto, Post>();
+        }
     }
 }
