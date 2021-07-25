@@ -42,6 +42,7 @@ namespace SocialMedia.API
 
             services.AddTransient<IPostService, PostService> ();
             services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             // Global Filter
             services.AddMvc(options =>
