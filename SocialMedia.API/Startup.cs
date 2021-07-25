@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SocialMedia.Core.Interfaces;
+using SocialMedia.Core.Services;
 using SocialMedia.Infrastructure.Data;
 using SocialMedia.Infrastructure.Filters;
 using SocialMedia.Infrastructure.Repositories;
@@ -39,6 +40,7 @@ namespace SocialMedia.API
             
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.AddTransient<IPostService, PostService> ();
             services.AddTransient<IPostRepository, PostRepository>();
 
             // Global Filter
