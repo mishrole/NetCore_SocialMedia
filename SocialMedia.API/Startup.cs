@@ -41,8 +41,9 @@ namespace SocialMedia.API
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddTransient<IPostService, PostService> ();
-            services.AddTransient<IPostRepository, PostRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
+            //services.AddTransient<IPostRepository, PostRepository>();
+            //services.AddTransient<IUserRepository, UserRepository>();
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
             // Global Filter
             services.AddMvc(options =>
