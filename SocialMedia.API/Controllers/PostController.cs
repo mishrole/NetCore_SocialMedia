@@ -13,7 +13,6 @@ namespace SocialMedia.API.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        //private readonly IPostRepository _postRepository;
         private readonly IPostService _postService;
         private readonly IMapper _mapper;
         public PostController(IPostService postService, IMapper mapper)
