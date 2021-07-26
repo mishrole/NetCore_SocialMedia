@@ -2,10 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SocialMedia.Core.Entities;
+using SocialMedia.Core.Interfaces;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SocialMedia.API.Controllers
 {
@@ -14,31 +16,38 @@ namespace SocialMedia.API.Controllers
     public class TokenController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly ISecurityService _securityService;
 
-        public TokenController(IConfiguration configuration)
+        public TokenController(IConfiguration configuration, ISecurityService securityService)
         {
             _configuration = configuration;
+            _securityService = securityService;
         }
 
         [HttpPost]
-        public IActionResult Authentication(UserLogin login)
+        public async Task<IActionResult> Authentication(UserLogin login)
         {
+
+            var validation = await IsValidUser(login);
+
             // Valid user?
-            if(IsValidUser(login))
+            if(validation.Item1)
             {
-                var token = GenerateToken();
+                var token = GenerateToken(validation.Item2);
                 return Ok(new { token });
             }
 
             return NotFound();
         }
 
-        private bool IsValidUser(UserLogin login)
+        // Tupla
+        private async Task<(bool, Security)> IsValidUser(UserLogin login)
         {
-            return true;
+            var user = await _securityService.GetLoginByCredentials(login);
+            return (user != null, user);
         }
 
-        private string GenerateToken()
+        private string GenerateToken(Security security)
         {
             //Header
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:SecretKey"]));
@@ -48,9 +57,9 @@ namespace SocialMedia.API.Controllers
             // Claims
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, "Mitchell Rodríguez"),
-                new Claim(ClaimTypes.Email, "mishrole.dev@gmail.com"),
-                new Claim(ClaimTypes.Role, "Administrador"),
+                new Claim(ClaimTypes.Name, security.UserName),
+                new Claim("User", security.User),
+                new Claim(ClaimTypes.Role, security.Role.ToString()),
             };
 
             // Payload
@@ -60,7 +69,7 @@ namespace SocialMedia.API.Controllers
                 _configuration["Authentication:Audience"],
                 claims,
                 DateTime.Now,
-                DateTime.UtcNow.AddMinutes(2)
+                DateTime.UtcNow.AddMinutes(Double.Parse(_configuration["Authentication:Expiration"]))
             );
 
             var token = new JwtSecurityToken(header, payload);
