@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using SocialMedia.API.Responses;
 using SocialMedia.Core.CustomEntities;
 using SocialMedia.Core.DTOs;
