@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace SocialMedia.API.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class PostController : ControllerBase
@@ -27,8 +28,13 @@ namespace SocialMedia.API.Controllers
             _uriService = uriService;
         }
 
+        /// <summary>
+        /// Retrieve all posts
+        /// </summary>
+        /// <param name="filters"></param>
+        /// <returns></returns>
         [HttpGet(Name = nameof(GetPosts))]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<PostDto>>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult GetPosts([FromQuery]PostQueryFilter filters)
         {
@@ -54,7 +60,11 @@ namespace SocialMedia.API.Controllers
 
             return Ok(response);
         }
-
+        /// <summary>
+        /// Retrieve a post by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPost(int id)
         {
@@ -64,7 +74,11 @@ namespace SocialMedia.API.Controllers
 
             return Ok(response);
         }
-
+        /// <summary>
+        /// Create a post
+        /// </summary>
+        /// <param name="postDto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Post(PostDto postDto)
         {
@@ -76,7 +90,12 @@ namespace SocialMedia.API.Controllers
 
             return Ok(response);
         }
-
+        /// <summary>
+        /// Update a post
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="postDto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, PostDto postDto)
         {
@@ -88,7 +107,11 @@ namespace SocialMedia.API.Controllers
 
             return Ok(response);
         }
-
+        /// <summary>
+        /// Delete a post
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
