@@ -5,8 +5,8 @@ using SocialMedia.Core.DTOs;
 using SocialMedia.Core.Entities;
 using SocialMedia.Core.Interfaces;
 using SocialMedia.Core.QueryFilters;
-using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace SocialMedia.API.Controllers
@@ -24,8 +24,8 @@ namespace SocialMedia.API.Controllers
         }
 
         [HttpGet]
-        // GetPosts(PostQueryFilter filters)            search: body
-        // Decorator [FromQuery]                        search: query string (URL?param1=&param2=)
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult GetPosts([FromQuery]PostQueryFilter filters)
         {
             var posts = _postService.GetPosts(filters);
