@@ -2,6 +2,7 @@
 using SocialMedia.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SocialMedia.Core.Services
@@ -34,12 +35,25 @@ namespace SocialMedia.Core.Services
                 throw new Exception("User doesn't exist");
             }
 
+            var userPost = await _unitOfWork.PostRepository.GetPostsByUser(post.UserId);
+
+            if(userPost.Count() < 10)
+            {
+                var lastPost = userPost.OrderByDescending(p => p.Date).FirstOrDefault();
+
+                if((DateTime.Now - lastPost.Date).TotalDays < 7) {
+                    throw new Exception("Not able to publish a new post yet");
+                }
+            }
+
+
             if(post.Description.ToLower().Contains("sexo"))
             {
                 throw new Exception("Content not allowed");
             }
 
             await _unitOfWork.PostRepository.Add(post);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<bool> UpdatePost(Post post)
