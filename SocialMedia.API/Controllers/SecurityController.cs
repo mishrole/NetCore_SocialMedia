@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using SocialMedia.API.Responses;
 using SocialMedia.Core.DTOs;
 using SocialMedia.Core.Entities;
+using SocialMedia.Core.Enumerations;
 using SocialMedia.Core.Interfaces;
 using System.Threading.Tasks;
 
 namespace SocialMedia.API.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = nameof(RoleType.Administrator))]
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
