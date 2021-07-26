@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialMedia.API.Responses;
 using SocialMedia.Core.CustomEntities;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace SocialMedia.API.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
