@@ -21,6 +21,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using SocialMedia.Infrastructure.Options;
 
 namespace SocialMedia.API
 {
@@ -54,6 +55,8 @@ namespace SocialMedia.API
 
             // Default Pagination Options
             services.Configure<PaginationOptions>(Configuration.GetSection("Pagination"));
+            // Hash Password Options
+            services.Configure<PasswordOptions>(Configuration.GetSection("PasswordOptions"));
 
             services.AddDbContext<SocialMediaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
 
@@ -61,6 +64,8 @@ namespace SocialMedia.API
             services.AddTransient<ISecurityService, SecurityService>();
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            services.AddSingleton<IPasswordHasher, PasswordService>();
 
             services.AddSingleton<IUriService>(provider =>
             {
