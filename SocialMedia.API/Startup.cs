@@ -22,6 +22,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using SocialMedia.Infrastructure.Options;
+using SocialMedia.Infrastructure.Extensions;
 
 namespace SocialMedia.API
 {
@@ -53,28 +54,10 @@ namespace SocialMedia.API
                 //options.SuppressModelStateInvalidFilter = true;
             });
 
-            // Default Pagination Options
-            services.Configure<PaginationOptions>(Configuration.GetSection("Pagination"));
-            // Hash Password Options
-            services.Configure<PasswordOptions>(Configuration.GetSection("PasswordOptions"));
+            services.AddOptions(Configuration);
+            services.AddDbContexts(Configuration);
+            services.AddServices(Configuration);
 
-            services.AddDbContext<SocialMediaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
-
-            services.AddTransient<IPostService, PostService>();
-            services.AddTransient<ISecurityService, SecurityService>();
-            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-
-            services.AddSingleton<IPasswordHasher, PasswordService>();
-
-            services.AddSingleton<IUriService>(provider =>
-            {
-                var accessor = provider.GetRequiredService<IHttpContextAccessor>();
-                var request = accessor.HttpContext.Request;
-                var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
-                return new UriService(absoluteUri);
-            });
-            
             // Swagger
             services.AddSwaggerGen(documentation =>
             {
@@ -85,6 +68,7 @@ namespace SocialMedia.API
                 documentation.IncludeXmlComments(xmlPath);
             });
 
+            // Jwt Authentication
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
